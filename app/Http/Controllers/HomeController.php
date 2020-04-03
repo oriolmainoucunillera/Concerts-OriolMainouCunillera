@@ -48,7 +48,10 @@ class HomeController extends Controller
         $compra->data_hora_compra = $hora ;
         $compra->save();
 
-        // DB::table('events')->where('id', $compra->id_event)->update(['entrades_disponibles' => -3 ]);
+        $num = DB::table("events")->where('id', $compra->id_event)->value("entrades_disponibles");
+        $result = $num - $compra->entrades;
+
+        DB::table('events')->where('id', $compra->id_event)->update(['entrades_disponibles' => $result ]);
 
         return redirect()->route('home')->with('info', 'Compra feta correctament.');
     }
